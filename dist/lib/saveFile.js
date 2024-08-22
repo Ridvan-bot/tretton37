@@ -32,21 +32,39 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.saveFile = void 0;
+/**
+ * Saves content to a file at the specified path.
+ * If necessary, creates the directory structure for the file.
+ *
+ * @param filePath - The path where the file should be saved, including the file name.
+ * @param content - The content to write to the file.
+ * @returns The path where the file was saved.
+ * @throws Will throw an error if the file could not be saved.
+ */
+const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
-const get_1 = require("./lib/get");
-const saveFile_1 = require("./lib/saveFile");
-// Base URL of the website
-const baseUrl = 'https://books.toscrape.com/';
-// Directory where the scraped content will be saved
-const localPath = '/data';
-const currentDir = process.cwd();
-const fullPath = path.join(currentDir, localPath);
-// Main function to scrape the site
-const main = () => __awaiter(void 0, void 0, void 0, function* () {
-    const content = yield (0, get_1.downloadWebPage)(baseUrl);
-    const savedFilesResult = yield (0, saveFile_1.saveFile)(fullPath, content);
+const saveFile = (folderPath, content) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // Check if the folder exists
+        if (!fs.existsSync(folderPath)) {
+            // If not, create the folder
+            fs.mkdirSync(folderPath, { recursive: true });
+            console.log(`Folder created at: ${folderPath}`);
+        }
+        else {
+            console.log(`Folder already exists at: ${folderPath}`);
+        }
+        // Define the full file path including the file name
+        const filePath = path.join(folderPath, 'index.html');
+        // Write the content to the file
+        yield fs.promises.writeFile(filePath, content);
+        console.log(`File saved at: ${filePath}`);
+        return filePath;
+    }
+    catch (error) {
+        console.error('Error saving file:', error);
+        throw error; // Re-throw the error to handle it further up the call stack
+    }
 });
-// Start the scraping process
-main()
-    .then(() => console.log('Scraping completed!')) // Log success message when scraping is complete
-    .catch(err => console.error('Scraping failed:', err)); // Log error message if scraping fails
+exports.saveFile = saveFile;
