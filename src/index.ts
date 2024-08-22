@@ -1,7 +1,8 @@
 // Importing libs
-
+import * as cheerio from 'cheerio';
 import * as fs from 'fs';
 import * as path from 'path';
+
 
 // Importing custom types
 import { Page } from './lib/types'; // Importing the 'Page' type definition
@@ -22,6 +23,3 @@ const saveFile = async (filePath: string, content: string) => {
 
 downloadWebPage(baseUrl);
 
-const scrapeSite = async () => {
-    return("this will be is the main function")
-}
