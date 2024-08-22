@@ -1,25 +1,30 @@
 // Importing libs
 import * as cheerio from 'cheerio';
-import * as fs from 'fs';
 import * as path from 'path';
-
 
 // Importing custom types
 import { Page } from './lib/types'; // Importing the 'Page' type definition
 import { downloadWebPage } from './lib/get';
+import { saveFile } from './lib/saveFile';
 
 // Base URL of the website
 const baseUrl = 'https://books.toscrape.com/';
 // Directory where the scraped content will be saved
-const rootDir = '../data';
+const localPath = '/data';
 
-// Function to save a file at the specified path with the given content
-const saveFile = async (filePath: string, content: string) => {
-    await fs.promises.mkdir(path.dirname(filePath), { recursive: true }); // Ensure the directory exists, create it if necessary
-    await fs.promises.writeFile(filePath, content); // Write the content to the file
-    return filePath; // Return the path where the file was saved
-  }
+const currentDir = process.cwd();
+const fullPath = path.join(currentDir, localPath);
 
 
-downloadWebPage(baseUrl);
+// Main function to scrape the site
+const main = async () => {    
 
+const content = await downloadWebPage(baseUrl);
+const savedFilesResult = await saveFile(fullPath, content);
+
+}
+  
+  // Start the scraping process
+  main()
+    .then(() => console.log('Scraping completed!')) // Log success message when scraping is complete
+    .catch(err => console.error('Scraping failed:', err)); // Log error message if scraping fails
