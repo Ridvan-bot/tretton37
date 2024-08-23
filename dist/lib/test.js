@@ -12,26 +12,48 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getHtml = void 0;
+exports.convertToJSDom = exports.getPage = exports.getPage_old = void 0;
 const axios_1 = __importDefault(require("axios"));
-const getHtml = (url) => __awaiter(void 0, void 0, void 0, function* () {
+const jsdom_1 = require("jsdom");
+const getPage_old = (url) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(`Fetching url: ${url}`);
         const response = yield axios_1.default.get(url, { responseType: 'arraybuffer' });
         const html = Buffer.from(response.data, 'binary').toString('utf-8');
         if (html) {
-            console.log('Fetch completed succesfully');
-            return html;
+            console.log(html);
+            return (html);
         }
         else {
-            console.error("Error: Received empty HTML content");
-            return null;
+            console.log("bad bad bad");
         }
     }
-    catch (error) {
-        // Log the error for debugging purposes
-        console.error('Error fetching HTML:', error);
-        throw error;
+    catch (_a) {
     }
 });
-exports.getHtml = getHtml;
+exports.getPage_old = getPage_old;
+const getPage = (url) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const response = yield axios_1.default.get(url, { responseType: 'arraybuffer' });
+        const html = Buffer.from(response.data, 'binary').toString('utf-8');
+        if (html) {
+            return (html);
+        }
+        else {
+            console.log("bad bad bad");
+        }
+    }
+    catch (_a) {
+    }
+});
+exports.getPage = getPage;
+const convertToJSDom = (htmlData) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // convert html sting to JSDOM object    
+        const htmlData = '<html>...</html>';
+        const jsDom = new jsdom_1.JSDOM(htmlData);
+        return jsDom;
+    }
+    catch (_a) {
+    }
+});
+exports.convertToJSDom = convertToJSDom;

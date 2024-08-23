@@ -12,26 +12,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getHtml = void 0;
-const axios_1 = __importDefault(require("axios"));
-const getHtml = (url) => __awaiter(void 0, void 0, void 0, function* () {
+const test_1 = require("./test");
+const saveFile_test_1 = require("./saveFile_test");
+const path_1 = __importDefault(require("path"));
+const dataPath = '/data';
+const currentDir = process.cwd();
+const fullPath = path_1.default.join(currentDir, dataPath);
+const main = () => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log(`Fetching url: ${url}`);
-        const response = yield axios_1.default.get(url, { responseType: 'arraybuffer' });
-        const html = Buffer.from(response.data, 'binary').toString('utf-8');
+        // fetch html 
+        const html = yield (0, test_1.getPage)("https://books.toscrape.com/");
+        //save html file
+        console.log(html);
         if (html) {
-            console.log('Fetch completed succesfully');
-            return html;
-        }
-        else {
-            console.error("Error: Received empty HTML content");
-            return null;
+            const htmlFile = yield (0, saveFile_test_1.saveFile)(fullPath, 'index.html', html);
+            console.log(htmlFile);
+            // convert html to JSDOM
+            const jsDomObject = yield (0, test_1.convertToJSDom)(html);
+            console.log(jsDomObject);
         }
     }
-    catch (error) {
-        // Log the error for debugging purposes
-        console.error('Error fetching HTML:', error);
-        throw error;
+    catch (_a) {
     }
 });
-exports.getHtml = getHtml;
+main();
