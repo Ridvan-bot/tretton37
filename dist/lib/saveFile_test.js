@@ -47,7 +47,6 @@ const path = __importStar(require("path"));
 const saveFile = (folderPath, fileName, content) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Check if the folder exists
-        console.log('Check if data folder exists...');
         if (!fs.existsSync(folderPath)) {
             // If not, create the folder
             fs.mkdirSync(folderPath, { recursive: true });
@@ -60,7 +59,6 @@ const saveFile = (folderPath, fileName, content) => __awaiter(void 0, void 0, vo
         const filePath = path.join(folderPath, fileName);
         // Write the content to the file
         if (content) {
-            console.log('Creating file...');
             yield fs.promises.writeFile(filePath, content);
             console.log(`File saved at: ${filePath}`);
             return filePath;

@@ -11,9 +11,10 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-export const saveFile = async (folderPath: string, content: string): Promise<string> => {
+export const saveFile = async (folderPath: string, fileName: string, content: string): Promise<string> => {
   try {
     // Check if the folder exists
+    console.log('Check if data folder exists...')
     if (!fs.existsSync(folderPath)) {
       // If not, create the folder
       fs.mkdirSync(folderPath, { recursive: true });
@@ -23,16 +24,21 @@ export const saveFile = async (folderPath: string, content: string): Promise<str
     }
 
     // Define the full file path including the file name
-    const filePath = path.join(folderPath, 'index.html');
+    const filePath = path.join(folderPath, fileName);
 
     // Write the content to the file
-    await fs.promises.writeFile(filePath, content);
-    console.log(`File saved at: ${filePath}`);
-    return filePath;
+    if (content) {
+      console.log('Creating file...')
+      await fs.promises.writeFile(filePath, content);
+      console.log(`File saved at: ${filePath}`);
+      return filePath;
+    } else {
+      return "No content to save";
+    }
   } catch (error) {
     console.error('Error saving file:', error);
     throw error; // Re-throw the error to handle it further up the call stack
   }
-}
+};
 
 
