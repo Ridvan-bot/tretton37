@@ -11,6 +11,3 @@ export const openHtmlFile = async (filePath: string) => {
         }
     });
 };
-
-// Replace 'index.html' with the path to your HTML file
-openHtmlFile('../../data/index.html');

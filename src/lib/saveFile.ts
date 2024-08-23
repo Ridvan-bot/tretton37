@@ -3,7 +3,7 @@
  * Saves content to a file at the specified path.
  * If necessary, creates the directory structure for the file.
  * 
- * @param filePath - The path where the file should be saved, including the file name.
+ * @param folderPath - The path where the file should be saved.
  * @param content - The content to write to the file.
  * @returns The path where the file was saved.
  * @throws Will throw an error if the file could not be saved.
@@ -37,7 +37,7 @@ export const saveFile = async (folderPath: string, fileName: string, content: st
     }
   } catch (error) {
     console.error('Error saving file:', error);
-    throw error; // Re-throw the error to handle it further up the call stack
+    throw error; 
   }
 };
 
