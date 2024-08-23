@@ -9,18 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.openHtmlFile = void 0;
-const child_process_1 = require("child_process");
-const path_1 = require("path");
-const openHtmlFile = (filePath) => __awaiter(void 0, void 0, void 0, function* () {
-    const fullPath = (0, path_1.join)(__dirname, filePath);
-    const command = process.platform === 'win32' ? `start ${fullPath}` : `open ${fullPath}`;
-    (0, child_process_1.exec)(command, (error) => {
-        if (error) {
-            console.error(`Error opening file: ${error.message}`);
-        }
-    });
+exports.convertToJSDom = void 0;
+const jsdom_1 = require("jsdom");
+const convertToJSDom = (htmlData) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // Convert HTML string to JSDOM object
+        console.log('Starting to convert html sting to JSDOM...');
+        const jsDom = new jsdom_1.JSDOM(htmlData);
+        return jsDom;
+    }
+    catch (error) {
+        // Log the error for debugging
+        console.error('Error converting HTML to JSDOM:', error);
+        throw error;
+    }
 });
-exports.openHtmlFile = openHtmlFile;
-// Replace 'index.html' with the path to your HTML file
-(0, exports.openHtmlFile)('../../data/index.html');
+exports.convertToJSDom = convertToJSDom;

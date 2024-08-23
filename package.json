@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tsc && node dist/lib/main_test.js",
     "build": "npx tsc",
     "start": "tsc && node dist/index.js",
     "open": "tsc && node dist/lib/openFile.js"
@@ -22,9 +22,10 @@
   "homepage": "https://github.com/Ridvan-bot/tretton37#readme",
   "dependencies": {
     "axios": "^1.7.4",
-    "cheerio": "^1.0.0"
+    "jsdom": "^24.1.1"
   },
   "devDependencies": {
+    "@types/jsdom": "^21.1.7",
     "@types/node": "^22.5.0",
     "typescript": "^5.5.4"
   }
