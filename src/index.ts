@@ -1,3 +1,13 @@
+
+/**
+ * This is the main ts script.
+ * The script will download all content from requested URL
+ * 
+ * @param dataPath - The path where the webpage will be stored.
+ * @returns A local copy of the requested URL
+ * @throws Will throw an error if the file could not be saved.
+ */
+
 import { getHtml } from './lib/get';
 import { convertToJSDom } from './lib/convert';
 import { saveFile } from './lib/saveFile';
@@ -20,6 +30,7 @@ const main = async () => {
         } else {
             console.error('Error: No HTML content fetched from the URL');
         }
+        return('The webpage')
     } catch (error) {
         // Log the error with a detailed message
         console.error('An error occurred during the scraping process:', error);
