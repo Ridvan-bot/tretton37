@@ -14,8 +14,6 @@ const main = async () => {
         if (html) {
             // Save HTML file in data folder
             const htmlFile = await saveFile(fullPath, 'index.html', html);
-            console.log(`HTML saved to ${htmlFile}`);
-
             // Convert HTML to JSDOM
             const jsDomObject = await convertToJSDom(html);
             console.log('HTML successfully converted to JSDOM object');
