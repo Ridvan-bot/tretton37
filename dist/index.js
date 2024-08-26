@@ -1,4 +1,12 @@
 "use strict";
+/**
+ * This is the main ts script.
+ * The script will download all content from requested URL
+ *
+ * @param dataPath - The path where the webpage will be stored.
+ * @returns A local copy of the requested URL
+ * @throws Will throw an error if the file could not be saved.
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -26,19 +34,22 @@ const main = () => __awaiter(void 0, void 0, void 0, function* () {
         if (html) {
             // Save HTML file in data folder
             const htmlFile = yield (0, saveFile_1.saveFile)(fullPath, 'index.html', html);
-            console.log(`HTML saved to ${htmlFile}`);
             // Convert HTML to JSDOM
             const jsDomObject = yield (0, convert_1.convertToJSDom)(html);
-            console.log('HTML successfully converted to JSDOM object');
+            // save all  imageUrl in an Array
+            const imgElements = jsDomObject.window.document.querySelectorAll('img');
+            const imgUrlsArray = Array.from(imgElements).map(img => img.src);
+            // Create folders for each imgURL
+            const hej = yield (0, saveFile_1.saveFiles)(imgUrlsArray);
         }
         else {
             console.error('Error: No HTML content fetched from the URL');
         }
+        return ('The webpage');
     }
     catch (error) {
         // Log the error with a detailed message
         console.error('An error occurred during the scraping process:', error);
-        // Optional: You can rethrow the error if you want the promise rejection to be caught in the .catch() after main() call
         throw error;
     }
 });

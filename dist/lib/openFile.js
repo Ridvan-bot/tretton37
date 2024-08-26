@@ -1,4 +1,12 @@
 "use strict";
+/**
+ * Open the html file in a browser
+ *
+ * @param filePath - The location of the file to be executed
+ * @param command - The command to open the file.
+ * @returns Nothing as of now, this will be e feature for the future.
+ * @throws Will throw an error if openinig the file fails.
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -22,5 +30,3 @@ const openHtmlFile = (filePath) => __awaiter(void 0, void 0, void 0, function* (
     });
 });
 exports.openHtmlFile = openHtmlFile;
-// Replace 'index.html' with the path to your HTML file
-(0, exports.openHtmlFile)('../../data/index.html');

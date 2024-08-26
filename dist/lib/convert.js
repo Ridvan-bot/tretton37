@@ -1,4 +1,12 @@
 "use strict";
+/**
+ * Convert sting to JSDOM
+ *
+ * @param htmlData - The sting to be converted to JSDOM.
+ * @param jsDom - Converted JSdom object.
+ * @returns a jsdom object.
+ * @throws Will throw an error if convert fails.
+ */
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {

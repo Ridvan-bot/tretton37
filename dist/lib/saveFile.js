@@ -32,18 +32,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.saveFile = void 0;
+exports.saveFiles = exports.saveFile = void 0;
 /**
  * Saves content to a file at the specified path.
  * If necessary, creates the directory structure for the file.
  *
- * @param filePath - The path where the file should be saved, including the file name.
+ * @param folderPath - The path where the file should be saved.
  * @param content - The content to write to the file.
  * @returns The path where the file was saved.
  * @throws Will throw an error if the file could not be saved.
  */
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
+const utils_1 = require("./utils");
 const saveFile = (folderPath, fileName, content) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // Check if the folder exists
@@ -71,7 +72,20 @@ const saveFile = (folderPath, fileName, content) => __awaiter(void 0, void 0, vo
     }
     catch (error) {
         console.error('Error saving file:', error);
-        throw error; // Re-throw the error to handle it further up the call stack
+        throw error;
     }
 });
 exports.saveFile = saveFile;
+// create a folder for each element in the URL
+const saveFiles = (imgUrlsArray) => __awaiter(void 0, void 0, void 0, function* () {
+    yield (0, utils_1.asyncForEach)(imgUrlsArray, (imageUrl) => __awaiter(void 0, void 0, void 0, function* () {
+        const imagePath = path.join(__dirname, imageUrl); // Full path for the image
+        const directory = path.dirname(imagePath); // Directory path
+        // Ensure the directory exists, create it if not
+        if (!fs.existsSync(directory)) {
+            console.log(`Creating folder from imgeUrl: ${imageUrl}`);
+            fs.mkdirSync(directory, { recursive: true });
+        }
+    }));
+});
+exports.saveFiles = saveFiles;

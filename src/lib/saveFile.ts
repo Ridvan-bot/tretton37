@@ -10,6 +10,7 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
+import { asyncForEach } from './utils';
 
 export const saveFile = async (folderPath: string, fileName: string, content: string): Promise<string> => {
   try {
@@ -42,3 +43,17 @@ export const saveFile = async (folderPath: string, fileName: string, content: st
 };
 
 
+// create a folder for each element in the URL
+export const saveFiles = async (imgUrlsArray: string[]) => {
+
+await asyncForEach(imgUrlsArray, async (imageUrl) => {
+  const imagePath = path.join(__dirname, imageUrl); // Full path for the image
+  const directory = path.dirname(imagePath); // Directory path
+
+  // Ensure the directory exists, create it if not
+  if (!fs.existsSync(directory)) {
+    console.log(`Creating folder from imgeUrl: ${imageUrl}`)
+      fs.mkdirSync(directory, { recursive: true });
+        }
+})
+}

@@ -10,7 +10,7 @@
 
 import { getHtml } from './lib/get';
 import { convertToJSDom } from './lib/convert';
-import { saveFile } from './lib/saveFile';
+import { saveFile, saveFiles } from './lib/saveFile';
 import path from 'path';
 
 const dataPath = '/data';
@@ -26,7 +26,11 @@ const main = async () => {
             const htmlFile = await saveFile(fullPath, 'index.html', html);
             // Convert HTML to JSDOM
             const jsDomObject = await convertToJSDom(html);
-            console.log('HTML successfully converted to JSDOM object');
+            // save all  imageUrl in an Array
+            const imgElements = jsDomObject.window.document.querySelectorAll('img');
+            const imgUrlsArray = Array.from(imgElements).map(img => img.src);
+            // Create folders for each imgURL
+            const hej = await saveFiles(imgUrlsArray)
         } else {
             console.error('Error: No HTML content fetched from the URL');
         }
