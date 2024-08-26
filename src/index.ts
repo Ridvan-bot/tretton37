@@ -1,6 +1,16 @@
+
+/**
+ * This is the main ts script.
+ * The script will download all content from requested URL
+ * 
+ * @param dataPath - The path where the webpage will be stored.
+ * @returns A local copy of the requested URL
+ * @throws Will throw an error if the file could not be saved.
+ */
+
 import { getHtml } from './lib/get';
 import { convertToJSDom } from './lib/convert';
-import { saveFile } from './lib/saveFile';
+import { saveFile, saveFiles } from './lib/saveFile';
 import path from 'path';
 
 const dataPath = '/data';
@@ -16,15 +26,18 @@ const main = async () => {
             const htmlFile = await saveFile(fullPath, 'index.html', html);
             // Convert HTML to JSDOM
             const jsDomObject = await convertToJSDom(html);
-            console.log('HTML successfully converted to JSDOM object');
+            // save all  imageUrl in an Array
+            const imgElements = jsDomObject.window.document.querySelectorAll('img');
+            const imgUrlsArray = Array.from(imgElements).map(img => img.src);
+            // Create folders for each imgURL
+            const hej = await saveFiles(imgUrlsArray)
         } else {
             console.error('Error: No HTML content fetched from the URL');
         }
+        return('The webpage')
     } catch (error) {
         // Log the error with a detailed message
         console.error('An error occurred during the scraping process:', error);
-
-        // Optional: You can rethrow the error if you want the promise rejection to be caught in the .catch() after main() call
         throw error;
     }
 };

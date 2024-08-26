@@ -1,3 +1,14 @@
+
+/**
+ * Convert sting to JSDOM
+ * 
+ * @param htmlData - The sting to be converted to JSDOM.
+ * @param jsDom - Converted JSdom object.
+ * @returns a jsdom object.
+ * @throws Will throw an error if convert fails.
+ */
+
+
 import { JSDOM } from 'jsdom';
 
 export const convertToJSDom = async (htmlData: string) => {
