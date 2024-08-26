@@ -43,7 +43,7 @@ export const saveFile = async (folderPath: string, fileName: string, content: st
 };
 
 
-// create a folder for each element in the URL
+// create a folder for each element in the Array
 export const saveFiles = async (imgUrlsArray: string[]) => {
 
 await asyncForEach(imgUrlsArray, async (imageUrl) => {
