@@ -21,29 +21,49 @@ Node.js: Ensure you have Node.js installed. You can download it from nodejs.org.
 
 TypeScript: Install TypeScript globally using npm if it's not already installed:
 
-npm install -g typescript
-Installation
+```
+| npm install -g typescript
+```
+
 Clone the repository:
 
-git clone git@github.com:Ridvan-bot/tretton37.git
+```
+| git clone git@github.com:Ridvan-bot/tretton37.git
+```
 Navigate into the project directory:
 
-cd tretton37
+```
+| cd tretton37
+```
+
 Install the project dependencies:
 
-npm install
+```
+| npm install
+```
+
 Usage <a name="usage"></a>
 
 Once you have the project set up, you can use the following npm scripts:
 
 Build the project:
-npm run build
+
+```
+| npm run build
+```
 
 Start the application:
-npm start
+```
+| npm run start
+
+```
+
 
 Open the project in a browser (if applicable):
-npm run open
+```
+| npm run open
+
+```
 
 ## Table of Commands
 + npm install
