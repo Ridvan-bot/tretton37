@@ -38,15 +38,13 @@ const main = async () => {
             const cssElements = jsDomObject.window.document.querySelectorAll('link[rel="stylesheet"]');
             const cssUrlsArray = Array.from(cssElements).map(link => (link as HTMLLinkElement).href);
 
-                // Find the "next" page URL
-                    // Find all "next" page links
-                    const nextPageElements = jsDomObject.window.document.querySelectorAll('li.next a');
-                    const nextPageUrlsArray: string[] = Array.from(nextPageElements).map(a => (a as HTMLAnchorElement).href);
-                    console.log(nextPageUrlsArray)
-                    combinedUrlsArray.push(...imgUrlsArray, ...cssUrlsArray, ...nextPageUrlsArray)
-                    console.log(combinedUrlsArray)
+            // Find the "next" page URL
+            const nextPageElements = jsDomObject.window.document.querySelectorAll('li.next a');
+            const nextPageUrlsArray: string[] = Array.from(nextPageElements).map(a => (a as HTMLAnchorElement).href);
+            console.log(nextPageUrlsArray)
+            combinedUrlsArray.push(...imgUrlsArray, ...cssUrlsArray, ...nextPageUrlsArray)
+            console.log(combinedUrlsArray)
 
-            // Combine both arrays into a single array
             // Download and save files from Array
             const scrapeResult = await saveFiles(combinedUrlsArray, baseurl)
             console.log(scrapeResult)
