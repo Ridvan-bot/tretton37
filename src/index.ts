@@ -20,7 +20,8 @@ const fullPath = path.join(currentDir, dataPath);
 const main = async () => {
     try {
         // Fetch HTML
-        const html = await getHtml("https://books.toscrape.com/");
+        const baseurl = "https://books.toscrape.com/";
+        const html = await getHtml(baseurl);
         if (html) {
             // Save HTML file in data folder
             const htmlFile = await saveFile(fullPath, 'index.html', html);
@@ -29,8 +30,16 @@ const main = async () => {
             // save all  imageUrl in an Array
             const imgElements = jsDomObject.window.document.querySelectorAll('img');
             const imgUrlsArray = Array.from(imgElements).map(img => img.src);
+            // Extract CSS URLs 
+            const cssElements = jsDomObject.window.document.querySelectorAll('link[rel="stylesheet"]');
+            const cssUrlsArray = Array.from(cssElements).map(link => (link as HTMLLinkElement).href);
+            // Combine both arrays into a single array
+            const combinedUrlsArray = imgUrlsArray.concat(cssUrlsArray);
+
+            console.log(combinedUrlsArray);
+
             // Create folders for each imgURL
-            const hej = await saveFiles(imgUrlsArray)
+            const hej = await saveFiles(combinedUrlsArray, baseurl)
         } else {
             console.error('Error: No HTML content fetched from the URL');
         }
