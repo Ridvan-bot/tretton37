@@ -12,6 +12,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import axios from "axios";
 import { asyncForEach } from './utils';
+import { ScrapingResult, ErrorDetail } from './types'
 
 export const saveFile = async (folderPath: string, fileName: string, content: string): Promise<string> => {
   try {
@@ -81,7 +82,6 @@ export const saveFiles = async (fileArray: string[], baseurl: string) => {
 
         // Handle the stream events
         writer.on('finish', () => {
-          console.log(`Successfully saved file: ${fileUrl}`);
           results.successes.push(fileUrl);
         });
         writer.on('error', (err) => {
@@ -89,7 +89,6 @@ export const saveFiles = async (fileArray: string[], baseurl: string) => {
           results.errors.push({ fileUrl, error: err });
         });
       } else {
-        console.log(`File already downloaded: ${fileUrl}`);
         results.successes.push(fileUrl);
       }
     } catch (error) {
