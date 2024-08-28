@@ -35,11 +35,9 @@ const main = async () => {
             const cssUrlsArray = Array.from(cssElements).map(link => (link as HTMLLinkElement).href);
             // Combine both arrays into a single array
             const combinedUrlsArray = imgUrlsArray.concat(cssUrlsArray);
-
-            console.log(combinedUrlsArray);
-
-            // Create folders for each imgURL
-            const hej = await saveFiles(combinedUrlsArray, baseurl)
+            // Download and save files from Array
+            const saveFileResult = await saveFiles(combinedUrlsArray, baseurl)
+            console.log(saveFileResult)
         } else {
             console.error('Error: No HTML content fetched from the URL');
         }

@@ -44,18 +44,26 @@ export const saveFile = async (folderPath: string, fileName: string, content: st
 };
 
 
-// create a folder for each element in the Array
-export const saveFiles = async (fileArray: string[], baseurl: string ) => {
-  console.log('Downloading missing files...')
-await asyncForEach(fileArray, async (fileUrl) => {
+// Check if folder and file from Array exists, download and creates folder & file if missing
+export const saveFiles = async (fileArray: string[], baseurl: string) => {
+  console.log('Downloading missing files...');
+  
+  // Track success and error information
+  const results = {
+    successes: [] as string[],
+    errors: [] as { fileUrl: string, error: any }[],
+  };
 
-  const dataDirectory = path.join(__dirname, '..', '..', 'data',fileUrl);
-  const directory = path.dirname(dataDirectory); // Directory path
+  await asyncForEach(fileArray, async (fileUrl) => {
+    const dataDirectory = path.join(__dirname, '..', '..', 'data', fileUrl);
+    const directory = path.dirname(dataDirectory); // Directory path
+
     // Ensure the directory exists, create it if not
     if (!fs.existsSync(directory)) {
       console.log(`Creating folder for image: ${fileUrl}`);
       fs.mkdirSync(directory, { recursive: true });
     }
+
     // Download the image
     try {
       // Combine baseurl and imageUrl using URL constructor
@@ -66,21 +74,31 @@ await asyncForEach(fileArray, async (fileUrl) => {
           url: fullUrl,
           responseType: 'stream', // Ensure the response data is a stream
         });
-      // Save the image to the file system
-      const writer = fs.createWriteStream(dataDirectory);
-      response.data.pipe(writer);
-      
-      // Handle the stream events
-      writer.on('finish', () => console.log(`Successfully saved file: ${fileUrl}`));
-      writer.on('error', (err) => console.error(`Error saving image: ${fileUrl}`, err));
-      }
-      else {
-        console.log(`File already downloaded: ${fileUrl}`)
+
+        // Save the image to the file system
+        const writer = fs.createWriteStream(dataDirectory);
+        response.data.pipe(writer);
+
+        // Handle the stream events
+        writer.on('finish', () => {
+          console.log(`Successfully saved file: ${fileUrl}`);
+          results.successes.push(fileUrl);
+        });
+        writer.on('error', (err) => {
+          console.error(`Error saving image: ${fileUrl}`, err);
+          results.errors.push({ fileUrl, error: err });
+        });
+      } else {
+        console.log(`File already downloaded: ${fileUrl}`);
+        results.successes.push(fileUrl);
       }
     } catch (error) {
       console.error(`Failed to download image: ${fileUrl}`, error);
+      results.errors.push({ fileUrl, error });
     }
   });
-};
 
+  // Return the results object after all files have been processed
+  return results;
+};
 
