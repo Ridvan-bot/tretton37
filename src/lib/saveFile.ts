@@ -10,6 +10,7 @@
  */
 import * as fs from 'fs';
 import * as path from 'path';
+import axios from "axios";
 import { asyncForEach } from './utils';
 
 export const saveFile = async (folderPath: string, fileName: string, content: string): Promise<string> => {
@@ -44,16 +45,42 @@ export const saveFile = async (folderPath: string, fileName: string, content: st
 
 
 // create a folder for each element in the Array
-export const saveFiles = async (imgUrlsArray: string[]) => {
+export const saveFiles = async (fileArray: string[], baseurl: string ) => {
+  console.log('Downloading missing files...')
+await asyncForEach(fileArray, async (fileUrl) => {
 
-await asyncForEach(imgUrlsArray, async (imageUrl) => {
-  const imagePath = path.join(__dirname, imageUrl); // Full path for the image
-  const directory = path.dirname(imagePath); // Directory path
-
-  // Ensure the directory exists, create it if not
-  if (!fs.existsSync(directory)) {
-    console.log(`Creating folder from imgeUrl: ${imageUrl}`)
+  const dataDirectory = path.join(__dirname, '..', '..', 'data',fileUrl);
+  const directory = path.dirname(dataDirectory); // Directory path
+    // Ensure the directory exists, create it if not
+    if (!fs.existsSync(directory)) {
+      console.log(`Creating folder for image: ${fileUrl}`);
       fs.mkdirSync(directory, { recursive: true });
-        }
-})
-}
+    }
+    // Download the image
+    try {
+      // Combine baseurl and imageUrl using URL constructor
+      const fullUrl = new URL(fileUrl, baseurl).href;
+      if (!fs.existsSync(dataDirectory)) {
+        const response = await axios({
+          method: 'get',
+          url: fullUrl,
+          responseType: 'stream', // Ensure the response data is a stream
+        });
+      // Save the image to the file system
+      const writer = fs.createWriteStream(dataDirectory);
+      response.data.pipe(writer);
+      
+      // Handle the stream events
+      writer.on('finish', () => console.log(`Successfully saved file: ${fileUrl}`));
+      writer.on('error', (err) => console.error(`Error saving image: ${fileUrl}`, err));
+      }
+      else {
+        console.log(`File already downloaded: ${fileUrl}`)
+      }
+    } catch (error) {
+      console.error(`Failed to download image: ${fileUrl}`, error);
+    }
+  });
+};
+
+
